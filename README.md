@@ -64,21 +64,21 @@ If we want to dive deeper into the underlying mechanisms, here how each componen
 ## 🔶 3. Project Structure
 
 ```
+msteams/
+├── manifest.json         # Manifest for MS Teams App
 src/
 ├── llm_confg/            # Prompt templates & params for LLM
-├── app.py                # Entry point for aiohttp server
-├── handler.py            # LangChainBot logic & adapter
-├── db.sqlite             # SQLite DB with 6 example tables: users, addresses, products, carts, orders, order_products
-├── config.py             # Config (API key, Redis, Teams App ID)
-├── requirements.txt      # Python lib packages need to be installed
 ├── tools/                # LLM tools
     ├── sql.py            # Perform SQL query
     ├── report.py         # Make HTML report
-    ├── report.py         # Make visualization chart (bar, line,...)
-msteams/
-├── manifest.json         # Manifest for MS Teams App
-README.md                 # Documentation
+    ├── chart.py          # Make visualization chart (bar, line,...)
+├── app.py                # Entry point for aiohttp server
+├── handler.py            # LangChainBot logic & adapter
+├── config.py             # Config (API key, Redis, Teams App ID)
+├── db.sqlite             # SQLite DB with 6 example tables: users, addresses, products, carts, orders, order_products
+├── requirements.txt      # Python lib packages need to be installed
 Dockerfile                # Dockerfile for deployment 
+README.md                 # Documentation
 ```
 
 
@@ -114,13 +114,6 @@ docker push 567749996008.dkr.ecr.ap-southeast-2.amazonaws.com/teamsbot-aws:lates
 * To quickly expose the API endpoint for development testing:
   `ngrok http 3978 --log=stdout > ngrok_logs/ngrok.log 2>&1`
 
-**API Endpoint (ECS Fargate + ALB):**
-[http://ecs-fargate-alb-1832008972.ap-southeast-2.elb.amazonaws.com:8501/](http://ecs-fargate-alb-1832008972.ap-southeast-2.elb.amazonaws.com:8501/)
-
-**AWS Route 53 + SSL via ACM:**
-[https://teamsbot.lethienhoa.com](https://teamsbot.lethienhoa.com)
-
-
 
 ### C. Register Bot with Microsoft Teams:
 
@@ -133,17 +126,16 @@ docker push 567749996008.dkr.ecr.ap-southeast-2.amazonaws.com/teamsbot-aws:lates
 
 ### D. Sample Prompt (Text2SQL)
 
-> "Show me the top 5 customers by revenue in 2023"
+> "Show me the top 5 products people ordered"
 
 The bot will auto-generate SQL like:
 
 ```sql
-SELECT customer_name, SUM(revenue) as total
-FROM sales
-WHERE year = 2023
-GROUP BY customer_name
-ORDER BY total DESC
-LIMIT 5;
+SELECT product_id, SUM(amount) as total_amount 
+FROM order_products 
+GROUP BY product_id 
+ORDER BY total_amount 
+DESC LIMIT 5;
 ```
 
 
