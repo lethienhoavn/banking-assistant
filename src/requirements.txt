@@ -1,0 +1,15 @@
+python-dotenv
+openai
+tiktoken
+aiohttp
+langchain
+langchain-community
+botbuilder-core
+gunicorn
+boto3
+botocore
+pydantic
+db-sqlite3
+plotly 
+kaleido
+pandas

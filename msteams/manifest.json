@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.13/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.13",
+  "version": "1.0.1",
+  "id": "14ef2cfb-8d4d-4f32-9d83-bc6923496b0f",
+  "packageName": "com.bank.bankingassistantv2",
+  "name": {
+    "short": "Banking Assistant V2",
+    "full": "Banking Assistant Chatbot V2"
+  },
+  "description": {
+    "short": "Chatbot hỗ trợ các nghiệp vụ ngân hàng",
+    "full": "Trợ lý AI cho khách hàng ngân hàng, hỗ trợ truy vấn thông tin và trả lời các câu hỏi thông minh."
+  },
+  "developer": {
+    "name": "Your Company or Name",
+    "websiteUrl": "https://yourcompanyv2.com",
+    "privacyUrl": "https://yourcompanyv2.com/privacy",
+    "termsOfUseUrl": "https://yourcompanyv2.com/terms"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#2D89EF",
+  "bots": [
+    {
+      "botId": "14ef2cfb-8d4d-4f32-9d83-bc6923496b0f",
+      "scopes": ["personal"],
+      "supportsFiles": false,
+      "isNotificationOnly": false
+    }
+  ],
+  "permissions": ["identity", "messageTeamMembers"],
+  "validDomains": ["1187-116-110-42-205.ngrok-free.app"]
+}
