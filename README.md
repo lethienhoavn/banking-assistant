@@ -12,7 +12,7 @@ An intelligent chatbot integrated into Microsoft Teams, powered by OpenAI and La
 
 ## 🔶 1. Key Features
 
-### 🤖 LLM Chat Using OpenAI GPT
+### 🤖 LLM Chat
 
 * Uses `ChatOpenAI` from LangChain.
 * Natural language interaction with conversation memory.
@@ -101,6 +101,15 @@ gunicorn --bind=0.0.0.0:3978 --worker-class=aiohttp.worker.GunicornWebWorker --t
 
 ### B. Deploy on AWS
 
+Authen AWS:
+
+```
+aws configure
+aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 567749996008.dkr.ecr.ap-southeast-2.amazonaws.com
+```
+
+Then:
+
 ```bash
 docker build -t teamsbot-aws .
 docker tag teamsbot-aws:latest 567749996008.dkr.ecr.ap-southeast-2.amazonaws.com/teamsbot-aws:latest
@@ -162,7 +171,7 @@ Main user interface for business teams to ask questions, retrieve data, or recei
 
 **Features**:
 
-* Natural language Q\&A (powered by OpenAI GPT via LangChain)
+* Natural language Q\&A (powered by LLM via LangChain)
 * Button-driven dashboards for frequently asked queries
 * Push notifications (e.g., anomaly alerts or opportunity suggestions)
 
@@ -280,7 +289,6 @@ Main user interface for business teams to ask questions, retrieve data, or recei
 | Role                   | Responsibilities                                        |
 | ---------------------- | ------------------------------------------------------- |
 | **Data Engineer**      | Build & maintain Lakehouse pipelines and infrastructure |
-| **Analytics Engineer** | Define semantic layer, KPIs, and dbt metrics            |
 | **Data Scientist**     | Build ML models for churn, upsell, etc.                 |
 | **LLM Engineer**       | Prompt design, tool integration, retrieval logic        |
 | **Platform Engineer**  | Setup CI/CD, access control, Docker/AWS infra           |
@@ -292,7 +300,7 @@ Main user interface for business teams to ask questions, retrieve data, or recei
 
 | Phase       | Deliverables                                                                 |
 | ----------- | ---------------------------------------------------------------------------- |
-| **Phase 1** | MVP bot for 2-3 key domains, data lake consolidation, basic pipeline setup   |
+| **Phase 1** | MVP bot, data lake consolidation, basic pipeline setup                       |
 | **Phase 2** | Semantic layer, LLM Q&A interface, anomaly detection alerts                  |
 | **Phase 3** | ML models for opportunity scoring, churn prediction, segment recommendations |
 | **Phase 4** | Monitoring, feedback loop, user training & adoption program                  |
