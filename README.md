@@ -203,7 +203,8 @@ Main user interface for business teams to ask questions, retrieve data, or recei
 **Function**:
 
 * Defines consistent business-friendly terms (e.g., `customer`, `segment`, `revenue`, `churn_risk`)
-* Built using **Semantic Layer** or tools like **Dagster** or **Airflow** over Delta Lake
+* Built using **Semantic Layer** or tools like **Dagster** or **Airflow** over Databricks Delta Lake
+* Exposes data via **Unity Catalog** 
 
 **Benefits**:
 
@@ -227,21 +228,6 @@ Main user interface for business teams to ask questions, retrieve data, or recei
 
 * Stores reusable features and model outputs for scoring and retraining
 
-
-### ✅ F. Databricks Lakehouse Platform
-
-**Delta Lake Tables**:
-
-* Stores curated domain-specific data (e.g., CIC, Finance, Procurement)
-
-**Pipelines**:
-
-* Built using **Databricks Workflows** and orchestrated by **Airflow/Dagster**
-
-**Access**:
-
-* Exposes data via **Unity Catalog** and **SQL Endpoints**
-* Used directly by the LLM agent and BI tools
 
 
 ## 🔶 2. Data Flow Overview
