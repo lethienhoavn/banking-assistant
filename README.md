@@ -198,13 +198,13 @@ Main user interface for business teams to ask questions, retrieve data, or recei
   *"Which B2B customers have high revenue but low digital engagement?"*
 
 
-### ✅ D. Semantic Layer (Customer 360 Ontology)
+### ✅ D. Data Consolidation (Customer 360 Ontology)
 
 **Function**:
 
-* Defines consistent business-friendly terms (e.g., `customer`, `segment`, `revenue`, `churn_risk`)
-* Built using **Semantic Layer** or tools like **Dagster** or **Airflow** over Databricks Delta Lake
-* Exposes data via **Unity Catalog** 
+* Consolidate disparate data (demographics, segments, transactions, digital activities, etc.) from B2C, B2B, and ImEx systems.
+* Standardize and clean data for analytics, ML, and dashboarding.
+* Centralize all business-relevant data into a **single source of truth**.
 
 **Benefits**:
 
@@ -229,8 +229,75 @@ Main user interface for business teams to ask questions, retrieve data, or recei
 * Stores reusable features and model outputs for scoring and retraining
 
 
+To realize your vision of **"No more fragmented data, silo-dashboards, and error-prone manual operations"**, the **first critical phase is Data Consolidation**, which is achieved through a **robust ETL (Extract, Transform, Load) pipeline**. Here's a breakdown of how the **ETL phase** works and how it fits into the overall solution architecture.
 
-## 🔶 2. Data Flow Overview
+
+## 🔶 2. **More about Data Consolidation**
+
+### 📌 **ETL Process Overview**
+
+#### a. **Extract**
+
+* Connect to various **source systems** (CRM, ERP, Core Banking, Digital Channels, Third-party APIs, Flat Files).
+* Perform **batch or streaming extraction** based on data frequency and system capability.
+
+| Source Type    | Examples                                        |
+| -------------- | ----------------------------------------------- |
+| Relational DB  | PostgreSQL, Oracle (Customer, Product, TXN)     |
+| APIs           | Digital platform activity logs, partner systems |
+| Flat files     | Excel/CSV uploads from manual ops               |
+| Message Queues | Kafka for real-time event streams               |
+
+#### b. **Transform**
+
+* **Data Cleaning**: Handle missing values, data types, duplicates.
+* **Standardization**: Uniform keys, naming conventions, encoding.
+* **Data Modeling**: Normalize or denormalize into **Star/Snowflake schema**.
+* **Business Rules**: Tagging segments, calculating balances, normalizing timestamps.
+
+💡 *This step is crucial to break silos and unify the schema for different business domains.*
+
+#### c. **Load**
+
+* Load curated data into the **Data Lakehouse (Delta Lake on Databricks)**.
+* Partition data for **efficient querying** (e.g., by customer segment, month).
+* Maintain **versioned datasets** (using Delta Lake ACID features).
+
+
+#### 🧱 Architecture Diagram (High-level)
+
+```plaintext
+       [Source Systems]
+         /     |      \
+ [Core Banking] [CRM] [Digital Logs] ...
+        |         |       |
+     [Extract Layer: Glue, Kafka, API]
+        |
+   [Raw Data Lake - S3 Bronze Layer]
+        |
+     [Transform: PySpark, dbt, Delta Live Tables]
+        |
+ [Curated Data Lake - S3 Silver Layer (Cleaned, Modeled)]
+        |
+   [Feature Store / ML Tables - Gold Layer]
+        |
+   [Downstream Apps: BI Dashboards, ML, LLM Bots, APIs]
+```
+
+#### 🛠 Tools & Platforms Needed
+
+| Component            | Tools/Platforms                                 |
+| -------------------- | ----------------------------------------------- |
+| Extraction           | AWS Glue, Airflow, Kafka, API Connectors        |
+| Transformation       | Databricks (PySpark, dbt, Delta Live Tables)    |
+| Storage              | AWS S3 (Bronze/Silver/Gold Layers)              |
+| Modeling & Serving   | Databricks SQL, MLflow, Feature Store           |
+| Visualization        | Power BI, Tableau, or Databricks SQL Dashboards |
+| Monitoring & Logging | CloudWatch, Datadog, dbt test suites            |
+
+
+
+## 🔶 3. Data Flow Overview
 
 1. **User Input**
    User opens Microsoft Teams and types:
@@ -255,8 +322,7 @@ Main user interface for business teams to ask questions, retrieve data, or recei
 6. **Optional Action**
    Push result to CRM or marketing automation platform for activation.
 
-
-## 🔶 3. Resources Required
+## 🔶 4. Resources Required
 
 ### ✅ A. Tools & Platforms
 
@@ -282,7 +348,7 @@ Main user interface for business teams to ask questions, retrieve data, or recei
 | **Project Manager**    | Manage timelines, roadmap, and stakeholder alignment    |
 
 
-## 🔶 4. Implementation Roadmap
+## 🔶 5. Implementation Roadmap
 
 | Phase       | Deliverables                                                                 |
 | ----------- | ---------------------------------------------------------------------------- |
@@ -292,7 +358,7 @@ Main user interface for business teams to ask questions, retrieve data, or recei
 | **Phase 4** | Monitoring, feedback loop, user training & adoption program                  |
 
 
-## 🔶 5. Expected Benefits
+## 🔶 6. Expected Benefits
 
 * ❌ No more Excel merging across departments
 * 🔁 Unified Customer 360 view across multiple domains
