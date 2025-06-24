@@ -18,11 +18,6 @@ An intelligent chatbot integrated into Microsoft Teams, powered by OpenAI and La
 * Natural language interaction with conversation memory.
 * Capable of answering questions across various domains.
 
-### 🧠 User-Specific Conversation Memory
-
-* Each user has a dedicated `ConversationBufferMemory`.
-* Maintains conversation context for more natural responses.
-
 ### 📊 Text-to-SQL Tool (Text2SQL)
 
 * Users can ask questions in natural language such as:
@@ -105,15 +100,15 @@ Authen AWS:
 
 ```
 aws configure
-aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 567749996008.dkr.ecr.ap-southeast-2.amazonaws.com
+aws ecr get-login-password --region <aws_region> | docker login --username AWS --password-stdin <aws_ecr_address>
 ```
 
 Then:
 
 ```bash
 docker build -t teamsbot-aws .
-docker tag teamsbot-aws:latest 567749996008.dkr.ecr.ap-southeast-2.amazonaws.com/teamsbot-aws:latest
-docker push 567749996008.dkr.ecr.ap-southeast-2.amazonaws.com/teamsbot-aws:latest
+docker tag teamsbot-aws:latest <aws_ecr_address>/teamsbot-aws:latest
+docker push <aws_ecr_address>/teamsbot-aws:latest
 ```
 
 **Note:**
@@ -227,142 +222,3 @@ Main user interface for business teams to ask questions, retrieve data, or recei
 **Databricks Feature Store**:
 
 * Stores reusable features and model outputs for scoring and retraining
-
-
-To realize your vision of **"No more fragmented data, silo-dashboards, and error-prone manual operations"**, the **first critical phase is Data Consolidation**, which is achieved through a **robust ETL (Extract, Transform, Load) pipeline**. Here's a breakdown of how the **ETL phase** works and how it fits into the overall solution architecture.
-
-
-## 🔶 2. **More about Data Consolidation**
-
-### 📌 **ETL Process Overview**
-
-#### a. **Extract**
-
-* Connect to various **source systems** (CRM, ERP, Core Banking, Digital Channels, Third-party APIs, Flat Files).
-* Perform **batch or streaming extraction** based on data frequency and system capability.
-
-| Source Type    | Examples                                        |
-| -------------- | ----------------------------------------------- |
-| Relational DB  | PostgreSQL, Oracle (Customer, Product, TXN)     |
-| APIs           | Digital platform activity logs, partner systems |
-| Flat files     | Excel/CSV uploads from manual ops               |
-| Message Queues | Kafka for real-time event streams               |
-
-#### b. **Transform**
-
-* **Data Cleaning**: Handle missing values, data types, duplicates.
-* **Standardization**: Uniform keys, naming conventions, encoding.
-* **Data Modeling**: Normalize or denormalize into **Star/Snowflake schema**.
-* **Business Rules**: Tagging segments, calculating balances, normalizing timestamps.
-
-💡 *This step is crucial to break silos and unify the schema for different business domains.*
-
-#### c. **Load**
-
-* Load curated data into the **Data Lakehouse (Delta Lake on Databricks)**.
-* Partition data for **efficient querying** (e.g., by customer segment, month).
-* Maintain **versioned datasets** (using Delta Lake ACID features).
-
-
-#### 🧱 Architecture Diagram (High-level)
-
-```plaintext
-       [Source Systems]
-         /     |      \
- [Core Banking] [CRM] [Digital Logs] ...
-        |         |       |
-     [Extract Layer: Glue, Kafka, API]
-        |
-   [Raw Data Lake - S3 Bronze Layer]
-        |
-     [Transform: PySpark, dbt, Delta Live Tables]
-        |
- [Curated Data Lake - S3 Silver Layer (Cleaned, Modeled)]
-        |
-   [Feature Store / ML Tables - Gold Layer]
-        |
-   [Downstream Apps: BI Dashboards, ML, LLM Bots, APIs]
-```
-
-#### 🛠 Tools & Platforms Needed
-
-| Component            | Tools/Platforms                                 |
-| -------------------- | ----------------------------------------------- |
-| Extraction           | AWS Glue, Airflow, Kafka, API Connectors        |
-| Transformation       | Databricks (PySpark, dbt, Delta Live Tables)    |
-| Storage              | AWS S3 (Bronze/Silver/Gold Layers)              |
-| Modeling & Serving   | Databricks SQL, MLflow, Feature Store           |
-| Visualization        | Power BI, Tableau, or Databricks SQL Dashboards |
-| Monitoring & Logging | CloudWatch, Datadog, dbt test suites            |
-
-
-
-## 🔶 3. Data Flow Overview
-
-1. **User Input**
-   User opens Microsoft Teams and types:
-   *"Show me all B2B customers with high revenue but low online usage."*
-
-2. **Intent Parsing**
-   The LLM interprets user intent and maps it to business terms defined in the Semantic Layer.
-
-3. **Query Generation**
-   The system generates a SQL query or invokes a relevant saved model pipeline.
-
-4. **Data Retrieval**
-   Queries Delta Lake or Feature Store to fetch the required data.
-
-5. **Insight Delivery**
-   Result is returned to Teams as:
-
-   * A dynamic table
-   * Visualization/chart
-   * Insight summary (*e.g., "120 clients meet criteria. Suggest activating online engagement."*)
-
-6. **Optional Action**
-   Push result to CRM or marketing automation platform for activation.
-
-## 🔶 4. Resources Required
-
-### ✅ A. Tools & Platforms
-
-| Category             | Tools Used                                                      |
-| -------------------- | --------------------------------------------------------------- |
-| **Cloud Platform**   | AWS (S3, API Gateway, ECS/EKS, ACM, Route 53, CloudWatch)       |
-| **Lakehouse & ETL**  | Databricks (Delta Lake, MLflow, Feature Store), Airflow/Dagster |
-| **LLM Engine**       | OpenAI GPT / Databrick LLM model + LangChain                    |
-| **Monitoring**       | AWS CloudWatch, LangSmith                                       |
-| **Bot + UI**         | Microsoft Teams + Azure Bot Framework                           |
-| **Deployment Tools** | Docker + Gunicorn + aiohttp                                     |
-
-
-### ✅ B. Team Roles
-
-| Role                   | Responsibilities                                        |
-| ---------------------- | ------------------------------------------------------- |
-| **Data Engineer**      | Build & maintain Lakehouse pipelines and infrastructure |
-| **Data Scientist**     | Build ML models for churn, upsell, etc.                 |
-| **LLM Engineer**       | Prompt design, tool integration, retrieval logic        |
-| **Platform Engineer**  | Setup CI/CD, access control, Docker/AWS infra           |
-| **Business Analyst**   | Design workflows, user journey, KPI logic               |
-| **Project Manager**    | Manage timelines, roadmap, and stakeholder alignment    |
-
-
-## 🔶 5. Implementation Roadmap
-
-| Phase       | Deliverables                                                                 |
-| ----------- | ---------------------------------------------------------------------------- |
-| **Phase 1** | MVP bot, data lake consolidation, basic pipeline setup                       |
-| **Phase 2** | Semantic layer, LLM Q&A interface, anomaly detection alerts                  |
-| **Phase 3** | ML models for opportunity scoring, churn prediction, segment recommendations |
-| **Phase 4** | Monitoring, feedback loop, user training & adoption program                  |
-
-
-## 🔶 6. Expected Benefits
-
-* ❌ No more Excel merging across departments
-* 🔁 Unified Customer 360 view across multiple domains
-* ⚡ Instant access to insights via natural language
-* 🎯 Personalized and contextual answers
-* 🙋 Empowered business teams with self-service tools
-* 🚀 Scalable and intelligent foundation for AI-first decision-making
