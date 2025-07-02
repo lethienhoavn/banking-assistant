@@ -58,7 +58,7 @@ An AI-powered assistant for banking insights: churn prediction, CLV, survival, u
 * Estimates **time remaining until churn** for each customer.
 * Powered by **Cox Proportional Hazards** model.
 * Provides top K customers at highest churn risk for **early retention actions**.
-* **Example:** *“List top 10 customers who are most likely to churn soon.”*
+* **Example:** *“Based on the estimated time to churn, when will the top 10 customers most likely churn?”*
 
 ### 📉 Churn Classification Tool
 
