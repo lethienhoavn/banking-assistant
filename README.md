@@ -1,4 +1,4 @@
-# 💬 Data Analyticts Assistant for Banking
+# 💬 Data Analytics Assistant for Banking
 
 An AI-powered assistant for banking insights: churn prediction, CLV, survival, uplift, causal discovery,...
 
