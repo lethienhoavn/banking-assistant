@@ -13,3 +13,14 @@ db-sqlite3
 plotly 
 kaleido
 pandas
+
+#
+networkx<3.0
+dowhy==0.9.1 
+scipy<1.13.0
+scikit-learn
+statsmodels
+langchain-core
+langchain_openai
+causalnex
+causaltune

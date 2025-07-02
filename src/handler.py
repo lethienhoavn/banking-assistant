@@ -19,6 +19,13 @@ from llm_config.system_instruct import SYSTEM_MESSAGE
 from tools.sql import run_query_tool, describe_tables_tool
 from tools.report import write_report_tool
 from tools.chart import plot_chart_tool
+from tools.analysis import (
+    calculate_clv_tool,
+    survival_analysis_tool,
+    churn_classification_tool,
+    uplift_modeling_tool,
+    discover_churn_factors_tool
+)
 
 
 
@@ -58,7 +65,12 @@ tools = [
     run_query_tool,
     describe_tables_tool,
     write_report_tool,
-    plot_chart_tool
+    plot_chart_tool,
+    calculate_clv_tool,
+    survival_analysis_tool,
+    churn_classification_tool,
+    uplift_modeling_tool,
+    discover_churn_factors_tool
 ]
 
 agent = OpenAIFunctionsAgent(

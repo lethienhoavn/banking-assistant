@@ -1,6 +1,10 @@
-# 💬 AI Assistant on Microsoft Teams
+# 💬 Data Analysis Assistant for Banking
 
-An intelligent chatbot integrated into Microsoft Teams, powered by OpenAI and LangChain for conversational interaction, data analysis, and visualization.
+An AI-powered assistant for banking insights: churn prediction, CLV, survival, uplift, causal discovery,...
+
+## 🗂️ Notes about Version Changes
+- `v1.1 (current version)`: integrate **Customer Lifetime Value (CLV)**, **Survival Analysis**, **Churn Prediction**, **Uplift Modeling**, **Causal Discovery**... to gain deeper insight on customer behaviors.
+- `v1.0` ([link](https://github.com/lethienhoavn/banking-assistant/tree/dd841824291d6587fc6271427bca29e76c0c736f)): basic data analysis assistant, integrated into Microsoft Teams, perform **text2sql** and **visualization**.
 
 # 🚀 PART 1. DEMO 
 
@@ -10,7 +14,7 @@ An intelligent chatbot integrated into Microsoft Teams, powered by OpenAI and La
 </div>
 
 
-## 🔶 1. Key Features
+## 🔶 1. Basic Key Features
 
 ### 🤖 LLM Chat
 
@@ -40,7 +44,46 @@ An intelligent chatbot integrated into Microsoft Teams, powered by OpenAI and La
 * The system is designed for easy integration of new tools: celery task, redis memory, retriever, vector search, agent, planner, etc.
 
 
-## 🔶 2. Key Architecture Explanations
+## 🔶 2. Advanced Insight Analytics
+
+### 💰 Customer Lifetime Value (CLV) Tool
+
+* Automatically calculates **expected revenue per customer** for the next 12 months.
+* Uses **BG/NBD + Gamma-Gamma** models for accurate prediction.
+* Helps marketing teams **identify top K high-value customers** for upsell campaigns.
+* **Example:** *“Show me the top 5 customers with the highest CLV for upselling.”*
+
+### 🕰️ Survival Analysis Tool
+
+* Estimates **time remaining until churn** for each customer.
+* Powered by **Cox Proportional Hazards** model.
+* Provides top K customers at highest churn risk for **early retention actions**.
+* **Example:** *“List top 10 customers who are most likely to churn soon.”*
+
+### 📉 Churn Classification Tool
+
+* Predicts **churn probability** using a machine learning classifier.
+* Finds **top K customers most likely to churn**.
+* Useful for **targeted win-back promotions**.
+* **Example:** *“Who are the top 20 customers at highest risk of churn?”*
+
+
+### 🎯 Uplift Modeling Tool
+
+* Estimates **uplift impact** of promotions on churn behavior.
+* Uses **treatment-control modeling** to measure **incremental effect**.
+* Identifies **which customers will respond positively** to marketing offers.
+* **Example:** *“How many customers will likely respond positively if we run a promotion?”*
+
+### 🔍 Causal Discovery Tool
+
+* Automatically discovers **potential causal factors** influencing churn.
+* Uses **CausalNex + NOTEARS** for relationship structure learning.
+* Highlights demographic or behavioral drivers to **optimize segmentation** and strategy.
+* **Example:** *“Find factors that may cause customers to churn.”*
+
+
+## 🔶 3. Key Architecture Explanations
 
 Basically, Text2SQL component works as follows:
 
@@ -56,7 +99,7 @@ If we want to dive deeper into the underlying mechanisms, here how each componen
 <img src="./images/detailed_text2sql.png" alt="Detailed Text2SQL Diagram" width="600" align=/>
 </div>
 
-## 🔶 3. Project Structure
+## 🔶 4. Project Structure
 
 ```
 msteams/
@@ -67,17 +110,20 @@ src/
     ├── sql.py            # Perform SQL query
     ├── report.py         # Make HTML report
     ├── chart.py          # Make visualization chart (bar, line,...)
+    ├── analysis.py       # Run Causal Inference, Uplift Modeling, Churn Prediction, Survival Analysis,...   
 ├── app.py                # Entry point for aiohttp server
 ├── handler.py            # LangChainBot logic & adapter
 ├── config.py             # Config (API key, Redis, Teams App ID)
-├── db.sqlite             # SQLite DB with 6 example tables: users, addresses, products, carts, orders, order_products
+├── generate_bank_data.py # Generate sample bank transaction data to run analysis
+├── bank.db               # Bank DB with 2 example tables: customer_data, raw_transactions
+├── db.sqlite             # Product DB with 6 example tables: users, addresses, products, carts, orders, order_products
 ├── requirements.txt      # Python lib packages need to be installed
 Dockerfile                # Dockerfile for deployment 
 README.md                 # Documentation
 ```
 
 
-## 🔶 4. Deployment
+## 🔶 5. Deployment
 
 ### A. Run Locally
 
